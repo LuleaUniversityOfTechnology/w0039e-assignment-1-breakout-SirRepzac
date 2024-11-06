@@ -3,10 +3,6 @@
 #include "constants.h"
 #include "Play.h"
 
-void SpawnBall() {
+void SpawnBall();
 
-}
-
-void StepFrame(float timeSinceLastStep) {
-
-}
+void StepFrame(float timeSinceLastStep);
