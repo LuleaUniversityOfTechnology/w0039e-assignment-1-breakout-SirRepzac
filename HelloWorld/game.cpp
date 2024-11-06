@@ -11,6 +11,7 @@ void SpawnBall() {
 
 void StepFrame(float timeSinceLastStep) {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
+	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
 	for (int i = 0; i < size(ballIds); i++) {
 		if (Play::GetGameObject(ballIds[i]).pos.x < 0 or Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2) {
 			Play::GetGameObject(ballIds[i]).velocity.x = -Play::GetGameObject(ballIds[i]).velocity.x;
@@ -20,13 +21,18 @@ void StepFrame(float timeSinceLastStep) {
 		}
 		Play::UpdateGameObject(Play::GetGameObject(ballIds[i]));
 		Play::DrawObject(Play::GetGameObject(ballIds[i]));
+
 		
+	}
+	for (int i = 0; i < size(brickIds); i++) {
+		Play::UpdateGameObject(Play::GetGameObject(brickIds[i]));
+		Play::DrawObject(Play::GetGameObject(brickIds[i]));
 	}
 }
 
 void SetupScene() {
-	for (int x = 2; x < DISPLAY_WIDTH - 8; x = x + 8) {
-		for (int y = 2; y < 23; y = y + 4) {
+	for (int x = 10; x < DISPLAY_WIDTH - 10; x = x + 20) {
+		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.75; y = y - 15) {
 			Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
 		}
 	}
