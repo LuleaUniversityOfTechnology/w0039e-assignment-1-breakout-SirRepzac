@@ -6,3 +6,7 @@
 void SpawnBall() {
 
 }
+
+void StepFrame(float timeSinceLastStep) {
+
+}
