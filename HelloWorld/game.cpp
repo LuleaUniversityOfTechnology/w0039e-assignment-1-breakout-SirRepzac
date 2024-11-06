@@ -24,6 +24,12 @@ void StepFrame(float timeSinceLastStep) {
 	}
 
 	for (int i = 0; i < size(ballIds); i++) {
+		if (IsColliding(globalPaddle, GameObject(ObjectType::TYPE_BALL, GetGameObject(ballIds[i]).pos, 4, -1))) {
+			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
+		}
+	}
+
+	for (int i = 0; i < size(ballIds); i++) {
 		if (Play::GetGameObject(ballIds[i]).pos.x < 0 or Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2) {
 			Play::GetGameObject(ballIds[i]).velocity.x *= -1;
 		}
@@ -44,8 +50,37 @@ void StepFrame(float timeSinceLastStep) {
 		}
 	}
 
+	
+	UpdatePaddle();
 	DrawPaddle(globalPaddle);
 
+}
+
+bool IsColliding(const Paddle paddle, const GameObject obj) {
+
+	Play::Point2D paddleBottomRight = Play::Point2D(paddle.pos.x + 30, paddle.pos.y - 5);
+	Play::Point2D paddleTopLeft = Play::Point2D(paddle.pos.x - 30, paddle.pos.y + 5);
+
+	const float dx = obj.pos.x - Max(paddleTopLeft.x, Min(obj.pos.x, paddleBottomRight.x));
+	const float dy = obj.pos.y - Max(paddleTopLeft.y, Min(obj.pos.y, paddleBottomRight.y));
+	return (dx * dx + dy * dy) < (obj.radius * obj.radius);
+}
+
+int Max(int value1, int value2) {
+	return (value1 > value2) ? value1 : value2;
+}
+
+int Min(int value1, int value2) {
+	return (value1 < value2) ? value1 : value2;
+}
+
+void UpdatePaddle() {
+	if (Play::KeyDown(Play::KeyboardButton(VK_LEFT))) {
+		globalPaddle.pos.x -= 5;
+	}
+	if (Play::KeyDown(Play::KeyboardButton(VK_RIGHT))) {
+		globalPaddle.pos.x += 5;
+	}
 }
 
 void SetupScene() {

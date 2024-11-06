@@ -2,7 +2,6 @@
 #include "Play.h"
 #include "constants.h"
 
-
 struct Paddle
 {
 	Play::Point2D pos;

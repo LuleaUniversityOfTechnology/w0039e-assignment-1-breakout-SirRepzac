@@ -1,5 +1,7 @@
 #include "Paddle.h"
 
+
+
 void DrawPaddle(const Paddle paddle) {
 
 	//bottom left
@@ -10,4 +12,5 @@ void DrawPaddle(const Paddle paddle) {
 
 	Play::DrawRect(bottomLeft, topRight, Play::cWhite, true);
 }
+
 
