@@ -76,16 +76,16 @@ int Min(int value1, int value2) {
 
 void UpdatePaddle() {
 	if (Play::KeyDown(Play::KeyboardButton(VK_LEFT))) {
-		globalPaddle.pos.x -= 5;
+		globalPaddle.pos.x -= 8;
 	}
 	if (Play::KeyDown(Play::KeyboardButton(VK_RIGHT))) {
-		globalPaddle.pos.x += 5;
+		globalPaddle.pos.x += 8;
 	}
 }
 
 void SetupScene() {
-	for (int x = 10; x < DISPLAY_WIDTH - 10; x = x + 20) {
-		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.75; y = y - 15) {
+	for (int x = 10; x < DISPLAY_WIDTH - 18; x = x + 17) {
+		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.75; y = y - 12) {
 			Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
 		}
 	}
