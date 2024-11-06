@@ -25,3 +25,4 @@ int MainGameExit( void )
 	Play::DestroyManager();
 	return PLAY_OK;
 }
+
