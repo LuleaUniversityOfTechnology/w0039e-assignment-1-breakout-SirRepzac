@@ -1,7 +1,8 @@
 #define PLAY_IMPLEMENTATION
 #define PLAY_USING_GAMEOBJECT_MANAGER
-#include "Play.h"
 #include "game.h"
+
+Paddle globalPaddle;
 
 void SpawnBall() {
 	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, {DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - (DISPLAY_HEIGHT - 60)}, 4, "ball");
@@ -9,25 +10,42 @@ void SpawnBall() {
 	ball.velocity = normalize({ 1, -1 }) * ballSpeed;
 }
 
+void SpawnPaddle() {
+	globalPaddle.pos = Play::Point2D(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - (DISPLAY_HEIGHT - 20));
+}
+
 void StepFrame(float timeSinceLastStep) {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
-	for (int i = 0; i < size(ballIds); i++) {
-		if (Play::GetGameObject(ballIds[i]).pos.x < 0 or Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2) {
-			Play::GetGameObject(ballIds[i]).velocity.x = -Play::GetGameObject(ballIds[i]).velocity.x;
-		}
-		if (Play::GetGameObject(ballIds[i]).pos.y < 0 or Play::GetGameObject(ballIds[i]).pos.y > DISPLAY_HEIGHT - Play::GetGameObject(ballIds[i]).radius * 2) {
-			Play::GetGameObject(ballIds[i]).velocity.y = -Play::GetGameObject(ballIds[i]).velocity.y;
-		}
-		Play::UpdateGameObject(Play::GetGameObject(ballIds[i]));
-		Play::DrawObject(Play::GetGameObject(ballIds[i]));
 
-		
-	}
 	for (int i = 0; i < size(brickIds); i++) {
 		Play::UpdateGameObject(Play::GetGameObject(brickIds[i]));
 		Play::DrawObject(Play::GetGameObject(brickIds[i]));
 	}
+
+	for (int i = 0; i < size(ballIds); i++) {
+		if (Play::GetGameObject(ballIds[i]).pos.x < 0 or Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2) {
+			Play::GetGameObject(ballIds[i]).velocity.x *= -1;
+		}
+		if (Play::GetGameObject(ballIds[i]).pos.y < 0 or Play::GetGameObject(ballIds[i]).pos.y > DISPLAY_HEIGHT - Play::GetGameObject(ballIds[i]).radius * 2) {
+			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
+		}
+		Play::UpdateGameObject(Play::GetGameObject(ballIds[i]));
+		Play::DrawObject(Play::GetGameObject(ballIds[i]));
+
+	}
+
+	for (int ball = 0; ball < size(ballIds); ball++) {
+		for (int brick = 0; brick < size(brickIds); brick++) {
+			if (Play::IsColliding(Play::GetGameObject(ballIds[ball]), Play::GetGameObject(brickIds[brick]))) {
+				Play::DestroyGameObject(brickIds[brick]);
+				Play::GetGameObject(ballIds[ball]).velocity.y *= -1;
+			}
+		}
+	}
+
+	DrawPaddle(globalPaddle);
+
 }
 
 void SetupScene() {

@@ -7,6 +7,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
 	SetupScene();
 	SpawnBall();
+	SpawnPaddle();
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
