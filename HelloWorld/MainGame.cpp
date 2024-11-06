@@ -1,4 +1,3 @@
-#define PLAY_IMPLEMENTATION
 #include "game.h"
 
 
@@ -16,7 +15,7 @@ bool MainGameUpdate( float elapsedTime )
 	Play::ClearDrawingBuffer(Play::cBlack);
 	StepFrame(elapsedTime);
 	Play::PresentDrawingBuffer();
-	return Play::KeyDown( KEY_ESCAPE );
+	return Play::KeyDown( Play::KeyboardButton::KEY_ESCAPE );
 
 }
 
