@@ -12,7 +12,7 @@ void SetupScene();
 
 void UpdatePaddle();
 
-bool IsColliding(Paddle paddle, Play::GameObject obj);
+bool IsColliding(Paddle paddle, Play::GameObject& obj);
 
 int Max(int value1, int value2);
 

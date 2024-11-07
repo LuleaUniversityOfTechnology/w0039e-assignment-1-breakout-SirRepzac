@@ -24,7 +24,7 @@ void StepFrame(float timeSinceLastStep) {
 	}
 
 	for (int i = 0; i < size(ballIds); i++) {
-		if (IsColliding(globalPaddle, GameObject(ObjectType::TYPE_BALL, GetGameObject(ballIds[i]).pos, 4, -1))) {
+		if (IsColliding(globalPaddle, GetGameObject(ballIds[i]))) {
 			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
 		}
 	}
@@ -56,7 +56,7 @@ void StepFrame(float timeSinceLastStep) {
 
 }
 
-bool IsColliding(const Paddle paddle, const GameObject obj) {
+bool IsColliding(const Paddle paddle, GameObject& obj) {
 
 	Play::Point2D paddleBottomRight = Play::Point2D(paddle.pos.x + 30, paddle.pos.y - 5);
 	Play::Point2D paddleTopLeft = Play::Point2D(paddle.pos.x - 30, paddle.pos.y + 5);
@@ -84,8 +84,13 @@ void UpdatePaddle() {
 }
 
 void SetupScene() {
-	for (int x = 10; x < DISPLAY_WIDTH - 18; x = x + 17) {
-		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.75; y = y - 12) {
+	//TOPRIGHT CORNER = DISPLAY_WIDTH - 16, DISPLAY_HEIGHT - 10
+	int xChange = 18;
+	int yChange = 12;
+	int distFromEdge = 10;
+	float extraPixelsNotFittingBrick = ((DISPLAY_WIDTH - 16 - distFromEdge*2) / xChange) % xChange;
+	for (float x = distFromEdge + extraPixelsNotFittingBrick / 2; x < DISPLAY_WIDTH - distFromEdge - 16; x += xChange) {
+		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.5; y -= yChange) {
 			Play::CreateGameObject(ObjectType::TYPE_BRICK, { x, y }, 6, "brick");
 		}
 	}
