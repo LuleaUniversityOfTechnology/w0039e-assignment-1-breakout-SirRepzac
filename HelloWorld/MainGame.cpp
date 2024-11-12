@@ -1,4 +1,8 @@
+#include "Paddle.h"
 #include "game.h"
+
+
+Paddle globalPaddle;
 
 
 // The entry point for a PlayBuffer program
@@ -7,7 +11,7 @@ void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
 	SetupScene();
 	SpawnBall();
-	SpawnPaddle();
+	SpawnPaddle(globalPaddle);
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -15,7 +19,8 @@ bool MainGameUpdate( float elapsedTime )
 {
 
 	Play::ClearDrawingBuffer(Play::cBlack);
-	StepFrame(elapsedTime);
+	StepFrame(elapsedTime, globalPaddle);
+	UpdatePaddle(globalPaddle);
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown( Play::KeyboardButton::KEY_ESCAPE );
 
