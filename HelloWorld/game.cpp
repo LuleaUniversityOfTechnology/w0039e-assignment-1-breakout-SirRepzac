@@ -11,7 +11,7 @@ void SpawnBall() {
 
 
 //Occurs every frame
-void StepFrame(float timeSinceLastStep, Paddle& paddle) {
+void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState) {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
 
@@ -32,11 +32,18 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle) {
 		if (Play::GetGameObject(ballIds[i]).pos.x < 0 || Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2) {
 			Play::GetGameObject(ballIds[i]).velocity.x *= -1;
 		}
-		if (Play::GetGameObject(ballIds[i]).pos.y < 0 || Play::GetGameObject(ballIds[i]).pos.y > DISPLAY_HEIGHT - Play::GetGameObject(ballIds[i]).radius * 2) {
+		if (Play::GetGameObject(ballIds[i]).pos.y > DISPLAY_HEIGHT - Play::GetGameObject(ballIds[i]).radius * 2) {
 			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
 		}
 		Play::UpdateGameObject(Play::GetGameObject(ballIds[i]));
 		Play::DrawObject(Play::GetGameObject(ballIds[i]));
+
+	}
+
+	for (int i = 0; i < size(ballIds); i++) {
+		if (Play::GetGameObject(ballIds[i]).pos.y < 0) {
+			LoseSenario(ballIds, gameState);
+		}
 
 	}
 
@@ -49,9 +56,30 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle) {
 			}
 		}
 	}
+
+	if (size(ballIds) == 0) {
+		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", cWhite);
+	}
 }
 
+void LoseSenario(vector<int> ballIds, GameState& gameState){
+	for (int i = 0; i < size(ballIds); i++) {
+		Play::DestroyGameObject(ballIds[i]);
+	}
 
+	gameState.Lost = true;
+}
+
+void Restart(GameState& gameState, Paddle& paddle) {
+	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
+	for (int i = 0; i < size(brickIds); i++) {
+		Play::DestroyGameObject(brickIds[i]);
+	}
+	gameState.Lost = false;
+	SpawnPaddle(paddle);
+	SetupScene();
+	SpawnBall();
+}
 
 //Setup bricks
 void SetupScene() {

@@ -3,12 +3,12 @@
 #include "constants.h"
 #include "Play.h"
 
-	struct Paddle
-	{
-		Play::Point2D pos; //bottom left corner
-		int height;
-		int length;
-	};
+struct Paddle
+{
+	Play::Point2D pos; //bottom left corner
+	int height;
+	int length;
+};
 
 void DrawPaddle(const Paddle paddle);
 

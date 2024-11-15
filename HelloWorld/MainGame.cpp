@@ -3,6 +3,7 @@
 
 
 Paddle globalPaddle;
+GameState globalGameState;
 
 
 // The entry point for a PlayBuffer program
@@ -19,10 +20,17 @@ bool MainGameUpdate( float elapsedTime )
 {
 
 	Play::ClearDrawingBuffer(Play::cBlack);
-	StepFrame(elapsedTime, globalPaddle);
+	StepFrame(elapsedTime, globalPaddle, globalGameState);
 	UpdatePaddle(globalPaddle);
 	Play::PresentDrawingBuffer();
+	if (globalGameState.Lost) {
+		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
+		if (Play::KeyDown(Play::KeyboardButton(VK_SPACE))) {
+			Restart(globalGameState, globalPaddle);
+		}
+	}
 	return Play::KeyDown( Play::KeyboardButton::KEY_ESCAPE );
+
 
 }
 
