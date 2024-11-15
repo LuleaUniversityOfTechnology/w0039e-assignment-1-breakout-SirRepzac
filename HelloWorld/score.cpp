@@ -1,8 +1,5 @@
 #include "Play.h"
 #include "score.h"
-#include <array>
-#include <stack>
-#include <string>
 using namespace std;
 
 
@@ -32,9 +29,12 @@ int GetNumberOfHighScores(const int highScores[])
 	return 5;
 }
 
-void DrawCurrentScore()
+void DrawCurrentScore(const int currentScore)
 {
+	std::string scoreString = std::to_string(currentScore);
+	const char* toDraw = scoreString.c_str();
 
+	Play::DrawDebugText({10, 10}, toDraw, Play::cWhite);
 }
 
 void ResetCurrentScore()
@@ -42,9 +42,20 @@ void ResetCurrentScore()
 
 }
 
-void AddCurrentScoreToHighScore()
+void AddCurrentScoreToHighScore(int& currentScore, int highScores[])
 {
-
+	for (int i = 0; i < 5; i++)
+	{
+		if (currentScore > highScores[i])
+		{
+			for (int j = 4; j > i; j--)
+			{
+				highScores[j] = highScores[j - 1];
+			}
+			highScores[i] = currentScore;
+			return;
+		}
+	}
 }
 
 void LoadHighScores(int highScores[])

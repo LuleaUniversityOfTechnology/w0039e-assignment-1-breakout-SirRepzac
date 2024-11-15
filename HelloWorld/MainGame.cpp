@@ -5,12 +5,14 @@
 Paddle globalPaddle;
 GameState globalGameState;
 int globalHighScores[5];
+int globalCurrentScore;
 
 
 // The entry point for a PlayBuffer program
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
+	globalCurrentScore = 0;
 	SetupScene();
 	SpawnBall();
 	SpawnPaddle(globalPaddle);
@@ -22,16 +24,16 @@ bool MainGameUpdate(float elapsedTime)
 {
 
 	Play::ClearDrawingBuffer(Play::cBlack);
-	StepFrame(elapsedTime, globalPaddle, globalGameState);
+	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighScores);
 	UpdatePaddle(globalPaddle);
-	DrawCurrentScore();
+	DrawCurrentScore(globalCurrentScore);
 	DrawHighScores(globalHighScores);
-	if (globalGameState.Lost)
+	if (globalGameState.Lost) //CANNOT RESTART, SOMETHING WRONG
 	{
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
 		if (Play::KeyDown(Play::KeyboardButton(VK_SPACE)))
 		{
-			Restart(globalGameState, globalPaddle);
+			Restart(globalGameState, globalPaddle, globalCurrentScore);
 		}
 	}
 	Play::PresentDrawingBuffer();

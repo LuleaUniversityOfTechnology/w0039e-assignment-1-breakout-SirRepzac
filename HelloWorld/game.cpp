@@ -12,7 +12,7 @@ void SpawnBall()
 
 
 //Occurs every frame
-void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState)
+void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, int highScores[])
 {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
@@ -20,26 +20,26 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState)
 	DrawBricks(brickIds);
 	DrawBalls(ballIds);
 	CheckAndActOnBallBounce(ballIds, paddle);
-	DestroyBricksTouchedByBall(ballIds, brickIds);
-	CheckAndActIfGameLoss(ballIds, gameState);
+	DestroyBricksTouchedByBall(ballIds, brickIds, currentScore);
+	CheckAndActIfGameLoss(ballIds, gameState, currentScore, highScores);
 	
 }
 
 //Ends game
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState)
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState, int& currentScore, int highScores[])
 {
 	//If ball reaches bottom of the screen
 	for (int i = 0; i < size(ballIds); i++)
 	{
 		if (Play::GetGameObject(ballIds[i]).pos.y < 0)
 		{
-			LoseScenario(ballIds, gameState);
+			LoseScenario(ballIds, gameState, currentScore, highScores);
 		}
 	}
 }
 
 //Destroys brick if it is touched by a ball
-void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds)
+void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore)
 {
 	for (int ball = 0; ball < size(ballIds); ball++)
 	{
@@ -49,6 +49,7 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 			{
 				Play::DestroyGameObject(brickIds[brick]);
 				Play::GetGameObject(ballIds[ball]).velocity.y *= -1;
+				currentScore++;
 			}
 		}
 	}
@@ -101,7 +102,7 @@ void DrawBalls(std::vector<int> ballIds)
 }
 
 //When the player loses
-void LoseScenario(vector<int> ballIds, GameState& gameState)
+void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[])
 {
 	for (int i = 0; i < size(ballIds); i++)
 	{
@@ -109,12 +110,12 @@ void LoseScenario(vector<int> ballIds, GameState& gameState)
 	}
 
 	gameState.Lost = true;
-	AddCurrentScoreToHighScore();
+	AddCurrentScoreToHighScore(currentScore, highScores);
 	ResetCurrentScore();
 }
 
 //When the player restarts
-void Restart(GameState& gameState, Paddle& paddle)
+void Restart(GameState& gameState, Paddle& paddle, int& currentScore)
 {
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
 	for (int i = 0; i < size(brickIds); i++)
@@ -125,6 +126,7 @@ void Restart(GameState& gameState, Paddle& paddle)
 	SpawnPaddle(paddle);
 	SetupScene();
 	SpawnBall();
+	currentScore = 0;
 }
 
 //Setup bricks

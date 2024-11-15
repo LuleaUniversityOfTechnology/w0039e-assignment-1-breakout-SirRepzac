@@ -11,23 +11,23 @@ struct GameState {
 
 void SpawnBall();
 
-void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState);
+void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, int highScores[]);
 
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState);
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState, int& currentScore, int highScores[]);
 
-void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds);
+void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore);
 
 void CheckAndActOnBallBounce(std::vector<int> ballIds, Paddle paddle);
 
-void DrawBricks(vector<int> brickIds);
+void DrawBricks(std::vector<int> brickIds);
 
-void DrawBalls(vector<int> ballIds);
+void DrawBalls(std::vector<int> ballIds);
 
 void SetupScene();
 
-void LoseScenario(std::vector<int> ballIds, GameState& gameState);
+void LoseScenario(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[]);
 
-void Restart(GameState& gameState, Paddle& paddle);
+void Restart(GameState& gameState, Paddle& paddle, int& currentScore);
 
 
 
