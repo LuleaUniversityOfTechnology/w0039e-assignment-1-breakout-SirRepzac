@@ -63,6 +63,6 @@ void LoadHighScores(int highScores[])
 	highScores[0] = 500;
 	highScores[1] = 399;
 	highScores[2] = 50;
-	highScores[3] = 20;
+	highScores[3] = 0;
 	highScores[4] = 0;
 }

@@ -108,10 +108,10 @@ void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, 
 	{
 		Play::DestroyGameObject(ballIds[i]);
 	}
-
-	gameState.Lost = true;
+	
 	AddCurrentScoreToHighScore(currentScore, highScores);
 	ResetCurrentScore();
+	gameState.Lost = true;
 }
 
 //When the player restarts
