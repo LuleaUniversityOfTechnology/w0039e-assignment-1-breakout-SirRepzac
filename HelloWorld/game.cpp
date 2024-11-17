@@ -26,7 +26,7 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, in
 }
 
 //Ends game
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState, int& currentScore, int highScores[])
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[])
 {
 	//If ball reaches bottom of the screen
 	for (int i = 0; i < size(ballIds); i++)
@@ -109,9 +109,9 @@ void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, 
 		Play::DestroyGameObject(ballIds[i]);
 	}
 	
-	AddCurrentScoreToHighScore(currentScore, highScores);
-	ResetCurrentScore();
 	gameState.Lost = true;
+	AddCurrentScoreToHighScore(currentScore, highScores);
+	
 }
 
 //When the player restarts

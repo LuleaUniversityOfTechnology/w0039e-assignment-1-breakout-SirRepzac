@@ -37,11 +37,6 @@ void DrawCurrentScore(const int currentScore)
 	Play::DrawDebugText({10, 10}, toDraw, Play::cWhite);
 }
 
-void ResetCurrentScore()
-{
-
-}
-
 void AddCurrentScoreToHighScore(int& currentScore, int highScores[])
 {
 	for (int i = 0; i < 5; i++)

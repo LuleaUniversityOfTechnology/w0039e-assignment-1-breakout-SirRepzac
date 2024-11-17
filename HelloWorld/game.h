@@ -13,7 +13,7 @@ void SpawnBall();
 
 void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, int highScores[]);
 
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState gameState, int& currentScore, int highScores[]);
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[]);
 
 void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore);
 

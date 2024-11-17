@@ -28,7 +28,7 @@ bool MainGameUpdate(float elapsedTime)
 	UpdatePaddle(globalPaddle);
 	DrawCurrentScore(globalCurrentScore);
 	DrawHighScores(globalHighScores);
-	if (globalGameState.Lost) //CANNOT RESTART, SOMETHING WRONG
+	if (globalGameState.Lost)
 	{
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
 		if (Play::KeyDown(Play::KeyboardButton(VK_SPACE)))
