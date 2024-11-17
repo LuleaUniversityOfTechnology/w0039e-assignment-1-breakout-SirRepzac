@@ -17,3 +17,5 @@ void DrawCurrentScore(const int currentScore);
 void AddCurrentScoreToHighScore(int& currentScore, int highScores[]);
 
 void LoadHighScores(int highScores[]);
+
+void WriteScore(int highScores[]);

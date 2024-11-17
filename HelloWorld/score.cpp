@@ -1,5 +1,6 @@
 #include "Play.h"
 #include "score.h"
+#include <fstream>
 using namespace std;
 
 
@@ -55,9 +56,36 @@ void AddCurrentScoreToHighScore(int& currentScore, int highScores[])
 
 void LoadHighScores(int highScores[])
 {
-	highScores[0] = 500;
-	highScores[1] = 399;
-	highScores[2] = 50;
-	highScores[3] = 0;
-	highScores[4] = 0;
+	ifstream highscoreFile;
+	highscoreFile.open("Highscores.txt");
+
+	for (int i = 0; i < 5; i++)
+	{
+		char score[16];
+		highscoreFile.getline(score, 16);
+		sscanf_s(score, "%d", &highScores[i]);
+
+	}
+
+	highscoreFile.close();
+}
+
+void WriteScore(int highScores[])
+{
+	string strs[5];
+	for (int i = 0; i < 5; i++)
+	{
+		strs[i] = std::to_string(highScores[i]) + "\n";
+	}
+
+	ofstream highscoreFile;
+	highscoreFile.open("Highscores.txt");
+
+	for (int i = 0; i < 5; i++)
+	{
+		highscoreFile << strs[i];
+	}
+
+	highscoreFile.close();
+
 }

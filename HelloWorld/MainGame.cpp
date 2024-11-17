@@ -1,18 +1,22 @@
 #include "Paddle.h"
 #include "game.h"
+#include <fstream>
 
 
 Paddle globalPaddle;
 GameState globalGameState;
-int globalHighScores[5];
+int *globalHighScores = new int[5]();
 int globalCurrentScore;
 
 
 // The entry point for a PlayBuffer program
 void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 {
+
+
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	globalCurrentScore = 0;
+	LoadHighScores(globalHighScores);
 	SetupScene();
 	SpawnBall();
 	SpawnPaddle(globalPaddle);
@@ -45,6 +49,8 @@ bool MainGameUpdate(float elapsedTime)
 // Gets called once when the player quits the game 
 int MainGameExit(void)
 {
+	WriteScore(globalHighScores);
+	delete globalHighScores;
 	Play::DestroyManager();
 	return PLAY_OK;
 }
