@@ -2,13 +2,13 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "constants.h"
 #include "Play.h"
-#include "Paddle.h"
 #include "score.h"
+#include "Paddle.h"
+
 
 struct GameState {
 	bool Lost = false;
 };
-
 
 
 void SpawnBall();
@@ -30,6 +30,8 @@ void SetupScene();
 void LoseScenario(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores);
 
 void Restart(GameState& gameState, Paddle& paddle, int& currentScore);
+
+
 
 
 

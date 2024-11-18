@@ -2,7 +2,6 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "game.h"
 
-
 void SpawnBall()
 {
 	const int objectId = Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - (DISPLAY_HEIGHT - 60) }, 4, "ball");
@@ -22,7 +21,7 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, in
 	CheckAndActOnBallBounce(ballIds, paddle);
 	DestroyBricksTouchedByBall(ballIds, brickIds, currentScore);
 	CheckAndActIfGameLoss(ballIds, gameState, currentScore, highScores);
-	
+
 }
 
 //Ends game
@@ -61,7 +60,7 @@ void CheckAndActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 	//Bounces ball on the paddle
 	for (int i = 0; i < size(ballIds); i++)
 	{
-		if (IsColliding(paddle, GetGameObject(ballIds[i])))
+		if (IsColliding(paddle, ballIds[i]))
 		{
 			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
 		}
@@ -144,3 +143,4 @@ void SetupScene()
 		}
 	}
 }
+

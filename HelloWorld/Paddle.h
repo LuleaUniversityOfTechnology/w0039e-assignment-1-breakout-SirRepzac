@@ -3,6 +3,8 @@
 #include "constants.h"
 #include "Play.h"
 
+using namespace Play;
+
 struct Paddle
 {
 	Play::Point2D pos; //bottom left corner
@@ -16,7 +18,7 @@ void SpawnPaddle(Paddle& paddle);
 
 void UpdatePaddle(Paddle& paddle);
 
-bool IsColliding(Paddle paddle, Play::GameObject& obj);
+bool IsColliding(Paddle paddle, int objId);
 
 float Max(float value1, float value2);
 
