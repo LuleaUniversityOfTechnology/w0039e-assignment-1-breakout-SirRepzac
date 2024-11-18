@@ -12,7 +12,7 @@ void SpawnBall()
 
 
 //Occurs every frame
-void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, int highScores[])
+void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
@@ -26,7 +26,7 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, in
 }
 
 //Ends game
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[])
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	//If ball reaches bottom of the screen
 	for (int i = 0; i < size(ballIds); i++)
@@ -102,7 +102,7 @@ void DrawBalls(std::vector<int> ballIds)
 }
 
 //When the player loses
-void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[])
+void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	for (int i = 0; i < size(ballIds); i++)
 	{

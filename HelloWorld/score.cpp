@@ -1,34 +1,50 @@
 #include "Play.h"
 #include "score.h"
+#include "game.h"
 #include <fstream>
 using namespace std;
 
 
-void DrawHighScores(const int highScores[])
+void DrawHighScores(const Highscores highScores)
 {
 
-	int nrOfHighScores = GetNumberOfHighScores(highScores);
+	//int nrOfHighScores = GetNumberOfHighScores(highScores);
+	//int nrOfHighscoresLowerOrEqualToFive;
+	//if (nrOfHighScores > 5)
+	//{
+	//	 nrOfHighscoresLowerOrEqualToFive = 5;
+	//}
+	//else
+	//{
+	//	nrOfHighscoresLowerOrEqualToFive = nrOfHighScores;
+	//}
 
-	for (int i = 0; i < nrOfHighScores; i++)
-	{
-		std::string scoreString = std::to_string(highScores[i]);
-		const char* toDraw = scoreString.c_str();
-
-		Play::DrawDebugText({ DISPLAY_WIDTH - 50, 10 + nrOfHighScores * 20 - i * 20 }, toDraw, Play::cWhite);
-	}
-}
-
-int GetNumberOfHighScores(const int highScores[])
-{
 	for (int i = 0; i < 5; i++)
 	{
-		if (highScores[i] == 0)
+		if (highScores.scores[i] != 0)
 		{
-			return i;
+			std::string scoreString = std::to_string(highScores.scores[i]);
+			const char* toDraw = scoreString.c_str();
+
+			Play::DrawDebugText({ DISPLAY_WIDTH - 30, 10 + (highScores.amount < 5 ? highScores.amount : 5) * 15 - i * 15 }, toDraw, Play::cWhite);
 		}
 	}
-	return 5;
 }
+
+//int GetNumberOfHighScores(const Highscores highScores)
+//{
+//	int nrOfHighscores = 0;
+//	int i = 0;
+//	while (true)
+//	{
+//		if (highScores[i] == 0)
+//		{
+//			return nrOfHighscores;
+//		}
+//		i++;
+//		nrOfHighscores++;
+//	}
+//}
 
 void DrawCurrentScore(const int currentScore)
 {
@@ -38,54 +54,73 @@ void DrawCurrentScore(const int currentScore)
 	Play::DrawDebugText({10, 10}, toDraw, Play::cWhite);
 }
 
-void AddCurrentScoreToHighScore(int& currentScore, int highScores[])
+void AddCurrentScoreToHighScore(int& currentScore, Highscores& highScores)
 {
-	for (int i = 0; i < 5; i++)
+	//int nrOfHS = GetNumberOfHighScores(highScores);
+	for (int i = 0; i < highScores.amount; i++)
 	{
-		if (currentScore > highScores[i])
+		if (currentScore > highScores.scores[i])	//new score is bigger than any of the previous scores
 		{
-			for (int j = 4; j > i; j--)
+			for (int j = highScores.amount - 1; j > i; j--)			//moves all scores smaller than the new score down one step
 			{
-				highScores[j] = highScores[j - 1];
+				highScores.scores[j] = highScores.scores[j - 1];
 			}
-			highScores[i] = currentScore;
+			highScores.scores[i] = currentScore;
 			return;
 		}
 	}
+
+	//if (highScores.amount < 5)
+	//{
+	//	for (int i = 0; i < 5; i++)
+	//	{
+	//		if (currentScore > highScores[i])
+	//		{
+	//			for (int j = nrOfHS - 1; j > i; j--)
+	//			{
+	//				highScores[j] = highScores[j - 1];
+	//			}
+	//			highScores[i] = currentScore;
+	//			return;
+	//		}
+	//	}
+	//}
 }
 
-void LoadHighScores(int highScores[])
+void LoadHighScores(Highscores& highScores)
 {
 	ifstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
 
-	for (int i = 0; i < 5; i++)
+	int nrOfHighscores = std::count(std::istreambuf_iterator<char>(highscoreFile),std::istreambuf_iterator<char>(), '\n');
+	highScores.scores = new int[nrOfHighscores]();
+	highScores.amount = nrOfHighscores;
+
+	for (int i = 0; i < nrOfHighscores; i++)
 	{
 		char score[16];
 		highscoreFile.getline(score, 16);
-		sscanf_s(score, "%d", &highScores[i]);
-
+		sscanf_s(score, "%d", &highScores.scores[i]);
 	}
-
-	highscoreFile.close();
 }
 
-void WriteScore(int highScores[])
-{
-	string strs[5];
-	for (int i = 0; i < 5; i++)
-	{
-		strs[i] = std::to_string(highScores[i]) + "\n";
-	}
 
+
+void WriteHighscoreToFile(Highscores& highScores)
+{
+	
+	//int nrOfHS = GetNumberOfHighScores(highScores);
 	ofstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < highScores.amount; i++)
 	{
-		highscoreFile << strs[i];
+		highscoreFile << std::to_string(highScores.scores[i]) << "\n";
 	}
-
+	if (highScores.scores[highScores.amount] != 0)
+	{
+		highscoreFile << "0";
+	}
 	highscoreFile.close();
 
 }

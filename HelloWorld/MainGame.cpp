@@ -5,7 +5,7 @@
 
 Paddle globalPaddle;
 GameState globalGameState;
-int *globalHighScores = new int[5]();
+Highscores globalHighscores;
 int globalCurrentScore;
 
 
@@ -16,11 +16,11 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	globalCurrentScore = 0;
-	LoadHighScores(globalHighScores);
+	LoadHighScores(globalHighscores);
 	SetupScene();
 	SpawnBall();
 	SpawnPaddle(globalPaddle);
-	LoadHighScores(globalHighScores);
+	LoadHighScores(globalHighscores);
 }
 
 // Called by PlayBuffer every frame (60 times a second!)
@@ -28,10 +28,10 @@ bool MainGameUpdate(float elapsedTime)
 {
 
 	Play::ClearDrawingBuffer(Play::cBlack);
-	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighScores);
+	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighscores);
 	UpdatePaddle(globalPaddle);
 	DrawCurrentScore(globalCurrentScore);
-	DrawHighScores(globalHighScores);
+	DrawHighScores(globalHighscores);
 	if (globalGameState.Lost)
 	{
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
@@ -49,8 +49,8 @@ bool MainGameUpdate(float elapsedTime)
 // Gets called once when the player quits the game 
 int MainGameExit(void)
 {
-	WriteScore(globalHighScores);
-	delete globalHighScores;
+	WriteHighscoreToFile(globalHighscores);
+	delete[] globalHighscores.scores;
 	Play::DestroyManager();
 	return PLAY_OK;
 }

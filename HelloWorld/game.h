@@ -9,11 +9,13 @@ struct GameState {
 	bool Lost = false;
 };
 
+
+
 void SpawnBall();
 
-void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, int highScores[]);
+void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, Highscores& highScores);
 
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[]);
+void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores);
 
 void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore);
 
@@ -25,7 +27,7 @@ void DrawBalls(std::vector<int> ballIds);
 
 void SetupScene();
 
-void LoseScenario(std::vector<int> ballIds, GameState& gameState, int& currentScore, int highScores[]);
+void LoseScenario(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores);
 
 void Restart(GameState& gameState, Paddle& paddle, int& currentScore);
 
