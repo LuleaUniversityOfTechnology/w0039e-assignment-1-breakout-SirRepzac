@@ -37,25 +37,25 @@ void DrawCurrentScore(const int currentScore)
 	std::string scoreString = std::to_string(currentScore);
 	const char* toDraw = scoreString.c_str();
 
-	Play::DrawDebugText({10, 10}, toDraw, Play::cWhite);
+	Play::DrawDebugText({ 10, 10 }, toDraw, Play::cWhite);
 }
 
 void AddCurrentScoreToHighScore(int& currentScore, Highscores& highScores)
 {
 	for (int i = 0; i < highScores.amount; i++)
 	{
-		if (currentScore > highScores.scores[i])	//new score is bigger than any of the previous scores
+		if (currentScore < highScores.scores[i])	//new score is bigger than any of the previous scores
+			continue;
+
+		for (int j = highScores.amount; j > i; j--)			//moves all scores smaller than the new score down one step
 		{
-			for (int j = highScores.amount; j > i; j--)			//moves all scores smaller than the new score down one step
+			if (j < highScores.amount)
 			{
-				if (j < highScores.amount)
-				{
-					highScores.scores[j] = highScores.scores[j - 1];
-				}
+				highScores.scores[j] = highScores.scores[j - 1];
 			}
-			highScores.scores[i] = currentScore;
-			return;
 		}
+		highScores.scores[i] = currentScore;
+		return;
 	}
 }
 
@@ -64,7 +64,7 @@ void LoadHighScores(Highscores& highScores)
 	ifstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
 	int newInt = 0;
-	std:string line;
+std:string line;
 	while (std::getline(highscoreFile, line))		//get lines for as long as possible and store the contents in "line"
 	{
 		const char* charLine = line.c_str();

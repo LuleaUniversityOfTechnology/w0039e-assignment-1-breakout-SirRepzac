@@ -31,6 +31,15 @@ bool MainGameUpdate(float elapsedTime)
 	UpdatePaddle(globalPaddle);
 	DrawCurrentScore(globalCurrentScore);
 	DrawHighScores(globalHighScores);
+	HandleLoss();
+	Play::PresentDrawingBuffer();
+	return Play::KeyDown(Play::KeyboardButton::KEY_ESCAPE);
+
+	
+}
+
+void HandleLoss()
+{
 	if (globalGameState.Lost)
 	{
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
@@ -44,10 +53,6 @@ bool MainGameUpdate(float elapsedTime)
 	{
 		globalCurrentScore++;
 	}
-	Play::PresentDrawingBuffer();
-	return Play::KeyDown(Play::KeyboardButton::KEY_ESCAPE);
-
-	
 }
 
 // Gets called once when the player quits the game 
