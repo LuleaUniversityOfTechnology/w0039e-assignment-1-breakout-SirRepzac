@@ -13,21 +13,6 @@ struct Highscores
 
     Highscores() = default;
 
-    // Destructor to clean up memory
-
-
-    // A method to initialize the array
-    void allocate(size_t newSize)
-    {
-        delete[] scores;  // Clean up old memory, if any
-        amount = newSize;
-        scores = new unsigned int[amount];  // Allocate new memory
-        for (int i = 0; i < amount; i++)
-        {
-            scores[i] = 0;
-        }
-    }
-
     void add(int addInt)
     {
         int* temp = new int[amount]();
@@ -52,12 +37,14 @@ typedef std::array<unsigned int, 5> HighScoreArray;
 
 void DrawHighScores(const Highscores highscores);
 
-//int GetNumberOfHighScores(const Highscores highscores);
+int GetRealAmountOfHighScores(const Highscores highScores);
 
 void DrawCurrentScore(const int highscores);
 
 void AddCurrentScoreToHighScore(int& currentScore, Highscores& highScores);
 
 void LoadHighScores(Highscores& highScores);
+
+void Sort(Highscores& highScores);
 
 void WriteHighscoreToFile(Highscores& highScores);

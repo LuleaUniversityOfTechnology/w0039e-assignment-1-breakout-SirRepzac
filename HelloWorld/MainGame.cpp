@@ -4,7 +4,7 @@
 
 Paddle globalPaddle;
 GameState globalGameState;
-Highscores globalHighscores;
+Highscores globalHighScores;
 int globalCurrentScore;
 
 
@@ -16,7 +16,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 
 	Play::CreateManager(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE);
 	globalCurrentScore = 0;
-	LoadHighScores(globalHighscores);
+	LoadHighScores(globalHighScores);
 	SetupScene();
 	SpawnBall();
 	SpawnPaddle(globalPaddle);
@@ -27,17 +27,22 @@ bool MainGameUpdate(float elapsedTime)
 {
 
 	Play::ClearDrawingBuffer(Play::cBlack);
-	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighscores);
+	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighScores);
 	UpdatePaddle(globalPaddle);
 	DrawCurrentScore(globalCurrentScore);
-	DrawHighScores(globalHighscores);
+	DrawHighScores(globalHighScores);
 	if (globalGameState.Lost)
 	{
 		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, "YOU LOSE", Play::cWhite);
+		Play::DrawDebugText({ DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 - 17 }, "PRESS SPACEBAR TO RETRY", Play::cWhite);
 		if (Play::KeyDown(Play::KeyboardButton(VK_SPACE)))
 		{
 			Restart(globalGameState, globalPaddle, globalCurrentScore);
 		}
+	}
+	if (Play::KeyDown(Play::KeyboardButton(VK_OEM_PLUS)))
+	{
+		globalCurrentScore++;
 	}
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown(Play::KeyboardButton::KEY_ESCAPE);
@@ -48,7 +53,8 @@ bool MainGameUpdate(float elapsedTime)
 // Gets called once when the player quits the game 
 int MainGameExit(void)
 {
-	WriteHighscoreToFile(globalHighscores);
+	WriteHighscoreToFile(globalHighScores);
+	delete[] globalHighScores.scores;
 	Play::DestroyManager();
 	return PLAY_OK;
 }

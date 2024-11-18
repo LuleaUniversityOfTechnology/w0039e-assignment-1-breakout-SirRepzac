@@ -7,24 +7,29 @@ using namespace std;
 
 void DrawHighScores(const Highscores highScores)
 {
-	int realAmount = 0;
+	int realAmount = GetRealAmountOfHighScores(highScores);
+
+	for (int i = 0; i < realAmount; i++)
+	{
+		std::string scoreString = std::to_string(highScores.scores[i]);
+		const char* toDraw = scoreString.c_str();
+
+		Play::DrawDebugText({ DISPLAY_WIDTH - 30, 10 + ((realAmount > 5) ? 5 : realAmount) * 15 - i * 15 }, toDraw, Play::cWhite);
+	}
+}
+
+//returns the amount of high scores that are larger than 0
+int GetRealAmountOfHighScores(const Highscores highScores)
+{
+	int returnAmount = 0;
 	for (int i = 0; i < highScores.amount; i++)
 	{
-		if (highScores.scores[i] != 0)
+		if (highScores.scores[i] > 0)
 		{
-			realAmount++;
+			returnAmount++;
 		}
 	}
-	for (int i = 0; i < 5; i++)
-	{
-		if (highScores.scores[i] != 0)
-		{
-			std::string scoreString = std::to_string(highScores.scores[i]);
-			const char* toDraw = scoreString.c_str();
-
-			Play::DrawDebugText({ DISPLAY_WIDTH - 30, 10 + ((realAmount > 5) ? 5 : realAmount) * 15 - i * 15 }, toDraw, Play::cWhite);
-		}
-	}
+	return returnAmount;
 }
 
 void DrawCurrentScore(const int currentScore)
@@ -44,28 +49,27 @@ void AddCurrentScoreToHighScore(int& currentScore, Highscores& highScores)
 			for (int j = highScores.amount; j > i; j--)			//moves all scores smaller than the new score down one step
 			{
 				if (j < highScores.amount)
+				{
 					highScores.scores[j] = highScores.scores[j - 1];
+				}
 			}
 			highScores.scores[i] = currentScore;
 			return;
 		}
-
 	}
-
 }
 
 void LoadHighScores(Highscores& highScores)
 {
 	ifstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
-	int amountOfLines = 0;
-	int tempInt = 0;
+	int newInt = 0;
 	std:string line;
-	while (std::getline(highscoreFile, line))
+	while (std::getline(highscoreFile, line))		//get lines for as long as possible and store the contents in "line"
 	{
 		const char* charLine = line.c_str();
-		sscanf_s(charLine, "%d", &tempInt);
-		highScores.add(tempInt);
+		sscanf_s(charLine, "%d", &newInt);
+		highScores.add(newInt);
 
 	}
 	while (highScores.amount < 5)	//fill up the first 5 lines with 0 if the text document didnt contain 5 lines
@@ -73,11 +77,20 @@ void LoadHighScores(Highscores& highScores)
 		highScores.add(0);
 
 	}
-
-	
+	Sort(highScores);
 }
 
-
+void Sort(Highscores& highScores)
+{
+	for (int i = highScores.amount - 1; i > 0; i--)
+	{
+		if (highScores.scores[i] > highScores.scores[i - 1])
+		{
+			std::swap(highScores.scores[i], highScores.scores[i - 1]);
+			Sort(highScores);
+		}
+	}
+}
 
 void WriteHighscoreToFile(Highscores& highScores)
 {
