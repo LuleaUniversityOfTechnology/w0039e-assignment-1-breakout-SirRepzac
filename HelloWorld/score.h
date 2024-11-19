@@ -9,14 +9,14 @@
 
 struct Highscores
 {
-	unsigned int* score = nullptr;
-    size_t amount = 0;
+	unsigned int* score = nullptr;      // Dynamically allocated array, size is declared later
+    int amount = 0;                     // Amount of high scores (values in the array)
 
     Highscores() = default;
 
     void add(int addInt)
     {
-        int* tempStorage = new int[amount]();
+        unsigned int* tempStorage = new unsigned int[amount]();   
         for (int i = 0; i < amount; i++)
         {
             tempStorage[i] = score[i];
@@ -35,7 +35,7 @@ struct Highscores
 
     void removeLast()
     {
-        int* tempStorage = new int[amount]();
+        unsigned int* tempStorage = new unsigned int[amount]();
         for (int i = 0; i < amount; i++)
         {
             tempStorage[i] = score[i];
@@ -51,8 +51,6 @@ struct Highscores
         delete[] tempStorage;
     }
 };
-
-typedef std::array<unsigned int, 5> HighScoreArray;
 
 void DrawHighScores(const Highscores highscores, Paddle& paddle);
 

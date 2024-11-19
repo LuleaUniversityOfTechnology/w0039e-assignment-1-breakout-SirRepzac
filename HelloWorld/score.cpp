@@ -7,10 +7,10 @@ using namespace std;
 
 void DrawHighScores(const Highscores highScores, Paddle& paddle)
 {
-	if (paddle.pos.x > DISPLAY_WIDTH - (90 + paddle.length))		//hides the highscores if they seem like they would be in the way
+	if (paddle.pos.x > DISPLAY_WIDTH - (90 + paddle.length))		// Hides the highscores if the paddle is too close
 		return;
 
-	int displayCap = (highScores.amount > 5) ? 5 : (int)highScores.amount;	//caps the amount of highscores displayed at 5
+	int displayCap = (highScores.amount > 5) ? 5 : highScores.amount;	// Caps the amount of highscores displayed
 	for (int i = 0; i < displayCap; i++)
 	{
 		std::string scoreString = std::to_string(highScores.score[i]);
@@ -52,17 +52,16 @@ void LoadHighScores(Highscores& highScores)
 	highscoreFile.open("Highscores.txt");
 	int newHighScore = 0;
 	std:string line;
-	while (std::getline(highscoreFile, line))		//get lines for as long as possible and store the contents in "line"
+	while (std::getline(highscoreFile, line))		// Gets every line in the file and stores the contents of the current line in "line"
 	{
 		const char* charLine = line.c_str();
 		sscanf_s(charLine, "%d", &newHighScore);
 		highScores.add(newHighScore);
-
 	}
 	Sort(highScores);
 }
 
-//Sorts from the biggest score (at index: 0) to smallest score (at index: amount - 1)
+// Sorts from the biggest score (at index: 0) to smallest score (at index: amount - 1)
 void Sort(Highscores& highScores)
 {
 	for (int i = highScores.amount - 1; i > 0; i--)
@@ -77,6 +76,8 @@ void Sort(Highscores& highScores)
 
 void WriteHighscoreToFile(Highscores& highScores)
 {
+	if (highScores.amount == 0)		// If there are no high scores, dont create a file
+		return;
 	ofstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
 

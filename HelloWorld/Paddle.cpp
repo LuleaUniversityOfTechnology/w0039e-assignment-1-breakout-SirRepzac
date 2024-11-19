@@ -5,10 +5,10 @@
 void DrawPaddle(const Paddle paddle)
 {
 
-	//bottom left
+	// Bottom left
 	Play::Point2D bottomLeft = Play::Point2D(paddle.pos.x, paddle.pos.y);
 
-	// top right
+	// Top right
 	Play::Point2D topRight = Play::Point2D(paddle.pos.x + paddle.length, paddle.pos.y + paddle.height);
 
 	Play::DrawRect(bottomLeft, topRight, Play::cWhite, true);
@@ -34,7 +34,7 @@ void SpawnPaddle(Paddle& paddle)
 	paddle.length = 60;
 }
 
-//Checks if the paddle is colliding with an object
+// Checks if the paddle is colliding with an object
 bool IsColliding(const Paddle paddle, int objId)
 {
 	GameObject& obj = GetGameObject(objId);
@@ -48,13 +48,13 @@ bool IsColliding(const Paddle paddle, int objId)
 
 }
 
-//Outputs the greater of two values
+// Outputs the greater of two values
 float Max(float value1, float value2)
 {
 	return (value1 > value2) ? value1 : value2;
 }
 
-//Outputs the lesser of two values
+// Outputs the lesser of two values
 float Min(float value1, float value2)
 {
 	return (value1 < value2) ? value1 : value2;

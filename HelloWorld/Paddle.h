@@ -7,7 +7,7 @@ using namespace Play;
 
 struct Paddle
 {
-	Play::Point2D pos; //bottom left corner
+	Play::Point2D pos; // Bottom left corner
 	int height;
 	int length;
 };

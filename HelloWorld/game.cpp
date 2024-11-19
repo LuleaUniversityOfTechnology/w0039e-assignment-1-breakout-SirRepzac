@@ -10,7 +10,7 @@ void SpawnBall()
 }
 
 
-//Occurs every frame
+// Occurs every frame
 void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	const std::vector<int> ballIds = Play::CollectGameObjectIDsByType(TYPE_BALL);
@@ -24,7 +24,7 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, in
 
 }
 
-//Ends game
+// Ends game
 void ActOnGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	//If ball reaches bottom of the screen
@@ -37,7 +37,7 @@ void ActOnGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentS
 	}
 }
 
-//Destroys brick if it is touched by a ball
+// Destroys brick if it is touched by a ball
 void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore)
 {
 	for (int ball = 0; ball < size(ballIds); ball++)
@@ -54,11 +54,11 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 	}
 }
 
-//Checks if a ball needs to bounce and then performs if
+// Checks if a ball needs to bounce and then performs if
 void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 {
 	int rand = Play::RandomRollRange(-0.75F, 0.75F);
-	//Bounces ball on the paddle
+	// Bounces ball on the paddle
 	for (int i = 0; i < size(ballIds); i++)
 	{
 		if (IsColliding(paddle, ballIds[i]))
@@ -69,7 +69,7 @@ void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 		}
 	}
 
-	//Bounces ball if it hits screen edge
+	// Bounces ball on screen edge
 	for (int i = 0; i < size(ballIds); i++)
 	{
 		if (Play::GetGameObject(ballIds[i]).pos.x < 0 || Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2)
@@ -87,7 +87,7 @@ void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 	}
 }
 
-//Makes sure the balls dont get too slow or too fast
+// Makes sure the ball doesn't get too slow or too fast
 void CheckSpeed(int ballId)
 {
 	if (abs(Play::GetGameObject(ballId).velocity.x) > ballSpeed * 2)
@@ -108,7 +108,7 @@ void CheckSpeed(int ballId)
 	}
 }
 
-//Draws bricks
+// Draws bricks
 void DrawBricks(std::vector<int> brickIds)
 {
 	for (int i = 0; i < size(brickIds); i++)
@@ -118,7 +118,7 @@ void DrawBricks(std::vector<int> brickIds)
 	}
 }
 
-//Draws balls
+// Draws balls
 void DrawBalls(std::vector<int> ballIds)
 {
 	for (int i = 0; i < size(ballIds); i++)
@@ -128,7 +128,7 @@ void DrawBalls(std::vector<int> ballIds)
 	}
 }
 
-//When the player loses
+// When the player loses
 void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	for (int i = 0; i < size(ballIds); i++)
@@ -141,7 +141,7 @@ void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, 
 
 }
 
-//When the player restarts
+// When the player restarts
 void Restart(GameState& gameState, Paddle& paddle, int& currentScore)
 {
 	const std::vector<int> brickIds = Play::CollectGameObjectIDsByType(TYPE_BRICK);
@@ -156,12 +156,12 @@ void Restart(GameState& gameState, Paddle& paddle, int& currentScore)
 	currentScore = 0;
 }
 
-//Setup bricks
+// Setup bricks
 void SetupScene()
 {
-	int xChange = 18;		//How far away each brick is from eachother in the x axis (includes the length of the next brick)
-	int yChange = 12;		//How far away each brick is from eachother in the y axis (includes the length of the next brick)
-	int extraPixels = ((DISPLAY_WIDTH - 10 * 2) / xChange) % xChange;			//extraPixels is meant to be the amount of pixels on the edge that could not fit an entire brick
+	int xChange = 18;		// How far away each brick is from eachother in the x axis (includes the length of the next brick)
+	int yChange = 12;		// How far away each brick is from eachother in the y axis (includes the length of the next brick)
+	int extraPixels = ((DISPLAY_WIDTH - 10 * 2) / xChange) % xChange;			// ExtraPixels is meant to be the amount of pixels on the edge that could not fit an entire brick
 	for (int x = extraPixels / 2; x < DISPLAY_WIDTH - extraPixels / 2; x += xChange)
 	{
 		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.5; y -= yChange)

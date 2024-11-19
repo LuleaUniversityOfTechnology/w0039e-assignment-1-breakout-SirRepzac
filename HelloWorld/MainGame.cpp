@@ -22,7 +22,7 @@ void MainGameEntry(PLAY_IGNORE_COMMAND_LINE)
 	SpawnPaddle(globalPaddle);
 }
 
-void HandleLoss() //I dont declare this in a header because i dont want to edit "Play.h"
+void HandleLoss() // I dont declare this in a header because i dont want to edit "Play.h"
 {
 	if (globalGameState.Lost)
 	{
@@ -33,7 +33,7 @@ void HandleLoss() //I dont declare this in a header because i dont want to edit 
 			Restart(globalGameState, globalPaddle, globalCurrentScore);
 		}
 	}
-	if (Play::KeyDown(Play::KeyboardButton(VK_OEM_PLUS)))	//cheat button (on swedish keyboard is the + key))
+	if (Play::KeyDown(Play::KeyboardButton(VK_OEM_PLUS)))	//cheat button (on swedish keyboard is the + key)
 	{
 		globalCurrentScore++;
 	}
@@ -54,8 +54,6 @@ bool MainGameUpdate(float elapsedTime)
 
 	
 }
-
-
 
 // Gets called once when the player quits the game 
 int MainGameExit(void)
