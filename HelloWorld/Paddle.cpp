@@ -18,11 +18,11 @@ void UpdatePaddle(Paddle& paddle)
 {
 	if (Play::KeyDown(Play::KeyboardButton(VK_LEFT)) && paddle.pos.x > 0)
 	{
-		paddle.pos.x -= 5;
+		paddle.pos.x -= paddleSpeed;
 	}
 	if (Play::KeyDown(Play::KeyboardButton(VK_RIGHT)) && paddle.pos.x < DISPLAY_WIDTH - paddle.length)
 	{
-		paddle.pos.x += 5;
+		paddle.pos.x += paddleSpeed;
 	}
 	DrawPaddle(paddle);
 }

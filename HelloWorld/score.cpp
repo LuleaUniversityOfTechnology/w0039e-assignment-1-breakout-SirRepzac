@@ -7,7 +7,7 @@ using namespace std;
 
 void DrawHighScores(const Highscores highScores, Paddle& paddle)
 {
-	if (paddle.pos.x > DISPLAY_WIDTH - 150)		//hides the highscores if they seem like they would be in the way
+	if (paddle.pos.x > DISPLAY_WIDTH - (90 + paddle.length))		//hides the highscores if they seem like they would be in the way
 		return;
 
 	int displayCap = (highScores.amount > 5) ? 5 : (int)highScores.amount;	//caps the amount of highscores displayed at 5

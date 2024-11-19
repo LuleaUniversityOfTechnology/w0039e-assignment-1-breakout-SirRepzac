@@ -21,6 +21,8 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 
 void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle);
 
+void CheckSpeed(int ballId);
+
 void DrawBricks(std::vector<int> brickIds);
 
 void DrawBalls(std::vector<int> ballIds);

@@ -57,12 +57,15 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 //Checks if a ball needs to bounce and then performs if
 void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 {
+	int rand = Play::RandomRollRange(-0.75F, 0.75F);
 	//Bounces ball on the paddle
 	for (int i = 0; i < size(ballIds); i++)
 	{
 		if (IsColliding(paddle, ballIds[i]))
 		{
 			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
+			Play::GetGameObject(ballIds[i]).velocity.x += rand;
+			CheckSpeed(ballIds[i]);
 		}
 	}
 
@@ -72,11 +75,36 @@ void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 		if (Play::GetGameObject(ballIds[i]).pos.x < 0 || Play::GetGameObject(ballIds[i]).pos.x > DISPLAY_WIDTH - Play::GetGameObject(ballIds[i]).radius * 2)
 		{
 			Play::GetGameObject(ballIds[i]).velocity.x *= -1;
+			Play::GetGameObject(ballIds[i]).velocity.y += rand;
+			CheckSpeed(ballIds[i]);
 		}
 		if (Play::GetGameObject(ballIds[i]).pos.y > DISPLAY_HEIGHT - Play::GetGameObject(ballIds[i]).radius * 2)
 		{
 			Play::GetGameObject(ballIds[i]).velocity.y *= -1;
+			Play::GetGameObject(ballIds[i]).velocity.x += rand;
+			CheckSpeed(ballIds[i]);
 		}
+	}
+}
+
+//Makes sure the balls dont get too slow or too fast
+void CheckSpeed(int ballId)
+{
+	if (abs(Play::GetGameObject(ballId).velocity.x) > ballSpeed * 2)
+	{
+		Play::GetGameObject(ballId).velocity.x *= 1.5;
+	}
+	if (abs(Play::GetGameObject(ballId).velocity.x) < ballSpeed / 2)
+	{
+		Play::GetGameObject(ballId).velocity.x *= 1.5;
+	}
+	if (abs(Play::GetGameObject(ballId).velocity.y > ballSpeed) * 2)
+	{
+		Play::GetGameObject(ballId).velocity.y *= 1.5;
+	}
+	if (abs(Play::GetGameObject(ballId).velocity.y < ballSpeed) / 2)
+	{
+		Play::GetGameObject(ballId).velocity.y *= 1.5;
 	}
 }
 
@@ -133,9 +161,8 @@ void SetupScene()
 {
 	int xChange = 18;		//How far away each brick is from eachother in the x axis (includes the length of the next brick)
 	int yChange = 12;		//How far away each brick is from eachother in the y axis (includes the length of the next brick)
-	int distFromEdge = 10;	//How far from the edge the outer bricks should be at minimum
-	int extraPixels = ((DISPLAY_WIDTH - distFromEdge * 2) / xChange) % xChange;			//extraPixels is meant to be the amount of pixels that could not fit an entire brick
-	for (int x = distFromEdge + extraPixels / 2; x < DISPLAY_WIDTH - distFromEdge; x += xChange)
+	int extraPixels = ((DISPLAY_WIDTH - 10 * 2) / xChange) % xChange;			//extraPixels is meant to be the amount of pixels on the edge that could not fit an entire brick
+	for (int x = extraPixels / 2; x < DISPLAY_WIDTH - extraPixels / 2; x += xChange)
 	{
 		for (int y = DISPLAY_HEIGHT - 20; y > DISPLAY_HEIGHT / 1.5; y -= yChange)
 		{
