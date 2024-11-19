@@ -47,7 +47,7 @@ bool MainGameUpdate(float elapsedTime)
 	StepFrame(elapsedTime, globalPaddle, globalGameState, globalCurrentScore, globalHighScores);
 	UpdatePaddle(globalPaddle);
 	DrawCurrentScore(globalCurrentScore);
-	DrawHighScores(globalHighScores);
+	DrawHighScores(globalHighScores, globalPaddle);
 	HandleLoss();
 	Play::PresentDrawingBuffer();
 	return Play::KeyDown(Play::KeyboardButton::KEY_ESCAPE);

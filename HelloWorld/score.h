@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Play.h"
+#include "Paddle.h"
 #include "constants.h"
 #include <array>
 #include <stack>
@@ -53,9 +54,7 @@ struct Highscores
 
 typedef std::array<unsigned int, 5> HighScoreArray;
 
-void DrawHighScores(const Highscores highscores);
-
-int GetRealAmountOfHighScores(const Highscores highScores);
+void DrawHighScores(const Highscores highscores, Paddle& paddle);
 
 void DrawCurrentScore(const int highscores);
 
