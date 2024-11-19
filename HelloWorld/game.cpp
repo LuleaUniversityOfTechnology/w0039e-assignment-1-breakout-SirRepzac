@@ -46,7 +46,7 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 		{
 			if (!Play::IsColliding(Play::GetGameObject(ballIds[ball]), Play::GetGameObject(brickIds[brick])))	//not colliding
 				continue;
-			
+
 			Play::DestroyGameObject(brickIds[brick]);
 			Play::GetGameObject(ballIds[ball]).velocity.y *= -1;
 			currentScore++;
@@ -54,10 +54,24 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 	}
 }
 
+//Rolls a random number between the floats min and max, has an accuracy of two decimals
+float RandomRollRangeFloat(float min, float max)
+{
+	if (min == max)
+		return min;
+	if (min > max ? true : false)
+		std::swap(min, max);
+	float valDif = (max - min) * 100;
+	float randomizedVal = std::rand() % (int)valDif + 1;	// Warning for potential loss of data, only time data will be lost here is if the input floats contain more than 2 decimals
+	randomizedVal /= 100;
+	randomizedVal += min;
+	return randomizedVal;
+}
+
 // Checks if a ball needs to bounce and then performs if
 void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 {
-	int rand = Play::RandomRollRange(-0.75F, 0.75F);
+	float rand = RandomRollRangeFloat(-0.75F, 0.75F);
 	// Bounces ball on the paddle
 	for (int i = 0; i < size(ballIds); i++)
 	{
@@ -90,21 +104,53 @@ void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 // Makes sure the ball doesn't get too slow or too fast
 void CheckSpeed(int ballId)
 {
-	if (abs(Play::GetGameObject(ballId).velocity.x) > ballSpeed * 2)
-	{
-		Play::GetGameObject(ballId).velocity.x *= 1.5;
+	// There is probably a better way to do this method than to use if statements but i cant think of it
+
+	if (Play::GetGameObject(ballId).velocity.x > 0)		// Velocity x going positive
+	{		
+		if (Play::GetGameObject(ballId).velocity.x > ballSpeed * 1.25)
+		{
+			Play::GetGameObject(ballId).velocity.x = ballSpeed;
+		}
+		else if (Play::GetGameObject(ballId).velocity.x < ballSpeed / 1.5)
+		{
+			Play::GetGameObject(ballId).velocity.x = ballSpeed;
+		}
 	}
-	if (abs(Play::GetGameObject(ballId).velocity.x) < ballSpeed / 2)
+	else												// Velocity x going negative
 	{
-		Play::GetGameObject(ballId).velocity.x *= 1.5;
+		if (Play::GetGameObject(ballId).velocity.x > -ballSpeed / 1.5)
+		{
+			Play::GetGameObject(ballId).velocity.x = -ballSpeed;
+		}
+		else if (Play::GetGameObject(ballId).velocity.x < -ballSpeed * 1.25)
+		{
+			Play::GetGameObject(ballId).velocity.x = -ballSpeed;
+		}
 	}
-	if (abs(Play::GetGameObject(ballId).velocity.y > ballSpeed) * 2)
-	{
-		Play::GetGameObject(ballId).velocity.y *= 1.5;
+
+	if (Play::GetGameObject(ballId).velocity.y > 0)		// Velocity y going positive
+	{		
+		if (Play::GetGameObject(ballId).velocity.y > ballSpeed * 1.25)
+		{
+			Play::GetGameObject(ballId).velocity.y = ballSpeed;
+		}
+		else if (Play::GetGameObject(ballId).velocity.y < ballSpeed / 1.5)
+		{
+			Play::GetGameObject(ballId).velocity.y = ballSpeed;
+		}
 	}
-	if (abs(Play::GetGameObject(ballId).velocity.y < ballSpeed) / 2)
+	else												// Velocity y going negative
 	{
-		Play::GetGameObject(ballId).velocity.y *= 1.5;
+		if (Play::GetGameObject(ballId).velocity.y > -ballSpeed / 1.5)
+		{
+			Play::GetGameObject(ballId).velocity.y = -ballSpeed;
+		}
+		else if (Play::GetGameObject(ballId).velocity.y < -ballSpeed * 1.25)
+		{
+			Play::GetGameObject(ballId).velocity.y = -ballSpeed;
+
+		}
 	}
 }
 

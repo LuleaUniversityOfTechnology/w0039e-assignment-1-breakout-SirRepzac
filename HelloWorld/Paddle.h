@@ -7,9 +7,9 @@ using namespace Play;
 
 struct Paddle
 {
-	Play::Point2D pos; // Bottom left corner
-	int height;
-	int length;
+	Play::Point2D pos;  // Bottom left corner
+	int height = 0;		// Placeholder value until the paddle is given a real value
+	int length = 0;
 };
 
 void DrawPaddle(const Paddle paddle);

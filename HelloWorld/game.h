@@ -19,6 +19,8 @@ void ActOnGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentS
 
 void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brickIds, int& currentScore);
 
+float RandomRollRangeFloat(float min, float max);
+
 void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle);
 
 void CheckSpeed(int ballId);

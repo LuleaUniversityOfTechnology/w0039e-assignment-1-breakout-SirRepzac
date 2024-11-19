@@ -51,7 +51,7 @@ void LoadHighScores(Highscores& highScores)
 	ifstream highscoreFile;
 	highscoreFile.open("Highscores.txt");
 	int newHighScore = 0;
-	std:string line;
+	std::string line;
 	while (std::getline(highscoreFile, line))		// Gets every line in the file and stores the contents of the current line in "line"
 	{
 		const char* charLine = line.c_str();
