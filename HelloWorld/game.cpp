@@ -18,14 +18,14 @@ void StepFrame(float timeSinceLastStep, Paddle& paddle, GameState& gameState, in
 
 	DrawBricks(brickIds);
 	DrawBalls(ballIds);
-	CheckAndActOnBallBounce(ballIds, paddle);
+	ActOnBallBounce(ballIds, paddle);
 	DestroyBricksTouchedByBall(ballIds, brickIds, currentScore);
-	CheckAndActIfGameLoss(ballIds, gameState, currentScore, highScores);
+	ActOnGameLoss(ballIds, gameState, currentScore, highScores);
 
 }
 
 //Ends game
-void CheckAndActIfGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
+void ActOnGameLoss(std::vector<int> ballIds, GameState& gameState, int& currentScore, Highscores& highScores)
 {
 	//If ball reaches bottom of the screen
 	for (int i = 0; i < size(ballIds); i++)
@@ -44,18 +44,18 @@ void DestroyBricksTouchedByBall(std::vector<int> ballIds, std::vector<int> brick
 	{
 		for (int brick = 0; brick < size(brickIds); brick++)
 		{
-			if (Play::IsColliding(Play::GetGameObject(ballIds[ball]), Play::GetGameObject(brickIds[brick])))
-			{
-				Play::DestroyGameObject(brickIds[brick]);
-				Play::GetGameObject(ballIds[ball]).velocity.y *= -1;
-				currentScore++;
-			}
+			if (!Play::IsColliding(Play::GetGameObject(ballIds[ball]), Play::GetGameObject(brickIds[brick])))	//not colliding
+				continue;
+			
+			Play::DestroyGameObject(brickIds[brick]);
+			Play::GetGameObject(ballIds[ball]).velocity.y *= -1;
+			currentScore++;
 		}
 	}
 }
 
 //Checks if a ball needs to bounce and then performs if
-void CheckAndActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
+void ActOnBallBounce(std::vector<int> ballIds, Paddle paddle)
 {
 	//Bounces ball on the paddle
 	for (int i = 0; i < size(ballIds); i++)
@@ -107,10 +107,10 @@ void LoseScenario(vector<int> ballIds, GameState& gameState, int& currentScore, 
 	{
 		Play::DestroyGameObject(ballIds[i]);
 	}
-	
+
 	gameState.Lost = true;
 	AddCurrentScoreToHighScore(currentScore, highScores);
-	
+
 }
 
 //When the player restarts

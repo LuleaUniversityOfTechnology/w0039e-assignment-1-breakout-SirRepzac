@@ -8,28 +8,46 @@
 
 struct Highscores
 {
-	unsigned int* scores = nullptr;
+	unsigned int* score = nullptr;
     size_t amount = 0;
 
     Highscores() = default;
 
     void add(int addInt)
     {
-        int* temp = new int[amount]();
+        int* tempStorage = new int[amount]();
         for (int i = 0; i < amount; i++)
         {
-            temp[i] = scores[i];
+            tempStorage[i] = score[i];
         }
         amount++;
-        delete[] scores;
-        scores = nullptr;
-        scores = new unsigned int[amount];
+        delete[] score;
+        score = nullptr;
+        score = new unsigned int[amount];
         for (int i = 0; i < amount - 1; i++)
         {
-            scores[i] = temp[i];
+            score[i] = tempStorage[i];
         }
-        scores[amount-1] = addInt;
-        delete[] temp;
+        score[amount-1] = addInt;
+        delete[] tempStorage;
+    }
+
+    void removeLast()
+    {
+        int* tempStorage = new int[amount]();
+        for (int i = 0; i < amount; i++)
+        {
+            tempStorage[i] = score[i];
+        }
+        amount--;
+        delete[] score;
+        score = nullptr;
+        score = new unsigned int[amount];
+        for (int i = 0; i < amount; i++)
+        {
+            score[i] = tempStorage[i];
+        }
+        delete[] tempStorage;
     }
 };
 
@@ -42,6 +60,8 @@ int GetRealAmountOfHighScores(const Highscores highScores);
 void DrawCurrentScore(const int highscores);
 
 void AddCurrentScoreToHighScore(int& currentScore, Highscores& highScores);
+
+void RemoveZeroScores(Highscores& highScores);
 
 void LoadHighScores(Highscores& highScores);
 

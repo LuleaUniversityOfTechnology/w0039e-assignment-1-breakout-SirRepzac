@@ -14,8 +14,6 @@ void DrawPaddle(const Paddle paddle)
 	Play::DrawRect(bottomLeft, topRight, Play::cWhite, true);
 }
 
-
-
 void UpdatePaddle(Paddle& paddle)
 {
 	if (Play::KeyDown(Play::KeyboardButton(VK_LEFT)) && paddle.pos.x > 0)
