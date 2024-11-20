@@ -87,3 +87,40 @@ void WriteHighscoreToFile(Highscores& highScores)
 	}
 	highscoreFile.close();
 }
+
+void Highscores::add(int addInt)
+{
+	unsigned int* tempStorage = new unsigned int[amount]();
+	for (int i = 0; i < amount; i++)
+	{
+		tempStorage[i] = score[i];
+	}
+	amount++;
+	delete[] score;
+	score = nullptr;
+	score = new unsigned int[amount];
+	for (int i = 0; i < amount - 1; i++)
+	{
+		score[i] = tempStorage[i];
+	}
+	score[amount - 1] = addInt;
+	delete[] tempStorage;
+}
+
+void Highscores::removeLast()
+{
+	unsigned int* tempStorage = new unsigned int[amount]();
+	for (int i = 0; i < amount; i++)
+	{
+		tempStorage[i] = score[i];
+	}
+	amount--;
+	delete[] score;
+	score = nullptr;
+	score = new unsigned int[amount];
+	for (int i = 0; i < amount; i++)
+	{
+		score[i] = tempStorage[i];
+	}
+	delete[] tempStorage;
+}
